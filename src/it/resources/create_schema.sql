@@ -1,0 +1,7 @@
+CREATE TABLE userdb (
+  id INT NOT NULL,
+  firstname VARCHAR(100) NOT NULL,
+  surname VARCHAR(100) NOT NULL,
+  age INT NOT NULL,
+  PRIMARY KEY(id)
+);
