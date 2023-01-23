@@ -1,5 +1,6 @@
 package com.example.usermanagementservice.service;
 
+import com.example.usermanagementservice.exceptions.IdNotFoundException;
 import com.example.usermanagementservice.repsitory.UserRepository;
 import com.example.usermanagementservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class  UserServiceImpl implements UserService    {
         if(userRepository.findById(user.getId()).isPresent()) {
             userRepository.save(user);
         }else {
-            throw new RuntimeException() ;
+            throw new IdNotFoundException() ;
         }
     }
 
@@ -70,7 +71,7 @@ public class  UserServiceImpl implements UserService    {
     public Optional<User> getUserById( Integer id)  {
 
         return Optional.ofNullable(userRepository.findById(id)
-                .orElseThrow(() -> new NullPointerException("Not Found")));
+                .orElseThrow(IdNotFoundException::new));
     }
 
     @Override
@@ -88,13 +89,16 @@ public class  UserServiceImpl implements UserService    {
 
     @Override
     public void deleteUser(int id)  {
-
-        userRepository.deleteById(id);
+//       if( userRepository.existsById(id))
+//       {
+           userRepository.deleteById(id);
+//       } else {
+//           throw new RuntimeException() ;
+//       }
     }
 
     @Override
     public void deleteAllUsers()  {
-
         userRepository.deleteAll();
     }
 

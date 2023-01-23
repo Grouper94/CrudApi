@@ -85,4 +85,26 @@ public interface UserController {
      })
      ResponseEntity<Optional<String>> deleteAllUsers();
 
+     @Operation(tags = {"Note"},
+             summary = "Returns  user's type and occupation with the specific id",
+             parameters = {@Parameter(name = "id",description = "id of User to be searched",example="1")})
+
+     @ApiResponses(value = {
+             @ApiResponse(responseCode = "200",description = "Found the User"),
+             @ApiResponse(responseCode = "404", description = "User Not Found")
+     })
+     ResponseEntity <List<String>> findUserOccupationAndTypeById(Integer id);
+
+
+     @Operation(tags = {"Note"},
+             summary = "Returns  User's Info")
+
+     @ApiResponses(value = {
+             @ApiResponse(responseCode = "200",description = "Found"),
+             @ApiResponse(responseCode = "404", description = "Error")
+     })
+     ResponseEntity <String> getUserInfo() ;
+
+
+
 }

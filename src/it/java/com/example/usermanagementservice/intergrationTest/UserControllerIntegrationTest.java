@@ -18,9 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,24 +38,24 @@ class UserControllerIntegrationTest {
 
     TestRestTemplate restTemplate = new TestRestTemplate();
 
-    static final String name = "NewName" ;
+    static final String NAME = "NewName" ;
 
-    static final String name1 = "Eli" ;
-    static final String surName = "NewSurname" ;
+    static final String NAME_1 = "Eli" ;
+    static final String SUR_NAME = "NewSurname" ;
 
-    static final String surName1 = "Gotier" ;
+    static final String SUR_NAME_1 = "Gotier" ;
 
-    static final String  uriGetIdTrue        =  "/crud/findUserById/1" ;
-    static final String  uriGetNameTrue      =  "/crud/findUserByName/Rick" ;
-    static final String  uriPostUserTrue     =  "/crud/AddUser?name="+name1+"&&surname="+surName1+"&age=41" ;
-    static final String  uriGetAll           =  "/crud/findAll" ;
-    static final String  uriPutUser          =  "/crud/Update" ;
-    static final String  uriDeleteIdTrue     =  "/crud/Delete/4" ;
-    static final String  uriGetIdFalse       =  "/crud/findUserById/10" ;
-    static final String  uriGetNameFalse     =  "/crud/findUserByName/Elias" ;
-    static final String  uriPostUserFalse    =  "/crud/AddUser?name=&&surname=Pierson&age=" ;
+    static final String URI_GET_ID_TRUE =  "/crud/findUserById/1" ;
+    static final String URI_GET_NAME_TRUE =  "/crud/findUserByName/Rick" ;
+    static final String URI_POST_USER_TRUE =  "/crud/AddUser?name="+ NAME_1 +"&&surname="+ SUR_NAME_1 +"&age=41" ;
+    static final String URI_GET_ALL =  "/crud/findAll" ;
+    static final String URI_PUT_USER =  "/crud/Update" ;
+    static final String URI_DELETE_ID_TRUE =  "/crud/Delete/4" ;
+    static final String URI_GET_ID_FALSE =  "/crud/findUserById/10" ;
+    static final String URI_GET_NAME_FALSE =  "/crud/findUserByName/Elias" ;
+    static final String URI_POST_USER_FALSE =  "/crud/AddUser?name=&&surname=Pierson&age=" ;
 
-    static final String  uriDeleteIdFalse    =  "/crud/Delete/544" ;
+    static final String URI_DELETE_ID_FALSE =  "/crud/Delete/544" ;
 
     private static final String LOCALHOST_PREFIX = "http://localhost:";
 
@@ -68,14 +65,13 @@ class UserControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriGetAll),
+                createURLWithPort(URI_GET_ALL),
                 HttpMethod.GET, entity, String.class);
 
         String expected = "[{\"id\":1,\"name\":\"Rick\",\"surname\":\"Morty\",\"age\":43},"
                 +"{\"id\":2,\"name\":\"Rick\",\"surname\":\"Robinson\",\"age\":73},"
                 +"{\"id\":3,\"name\":\"George\",\"surname\":\"Palson\",\"age\":22}]" ;
 
-        System.out.println(response2.getBody());
         JSONAssert.assertEquals(expected, response2.getBody(), false);
     }
 
@@ -87,7 +83,7 @@ class UserControllerIntegrationTest {
         String expected = "{\"id\":1,\"name\":\"Rick\",\"surname\":\"Morty\",\"age\":43}";
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriGetIdTrue),
+                createURLWithPort(URI_GET_ID_TRUE),
                 HttpMethod.GET, entity, String.class);
 
         JSONAssert.assertEquals(expected, response2.getBody(), false);
@@ -102,7 +98,7 @@ class UserControllerIntegrationTest {
                          +"{\"id\":2,\"name\":\"Rick\",\"surname\":\"Robinson\",\"age\":73}]";
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriGetNameTrue),
+                createURLWithPort(URI_GET_NAME_TRUE),
                 HttpMethod.GET, entity, String.class);
         JSONAssert.assertEquals(expected, response2.getBody(), false);
     }
@@ -113,39 +109,39 @@ class UserControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriPostUserTrue),
+                createURLWithPort(URI_POST_USER_TRUE),
                 HttpMethod.POST, entity, String.class);
 
         assertTrue(response2.getStatusCode().is2xxSuccessful()) ;
 
-        User actual = h2Repository.findByName(name1);
+        final User ACTUAL = h2Repository.findByName(NAME_1);
 
-        assertEquals(name1,actual.getName());
+        assertEquals(NAME_1,ACTUAL.getName());
 
-        assertEquals(surName1,actual.getSurname());
+        assertEquals(SUR_NAME_1,ACTUAL.getSurname());
 
-        assertEquals(41,actual.getAge());
+        assertEquals(41,ACTUAL.getAge());
 
-        h2Repository.deleteById(actual.getId());
+        h2Repository.deleteById(ACTUAL.getId());
 
     }
 
     @Test
     void updateUser_whenGivenIdExists_thenReturnValidResponse()  {
 
-        HttpEntity<User> entity = new HttpEntity<User>(new User(1,name,surName,56));
+        HttpEntity<User> entity = new HttpEntity<User>(new User(1, NAME, SUR_NAME,56));
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriPutUser),
+                createURLWithPort(URI_PUT_USER),
                 HttpMethod.PUT, entity, String.class);
 
-        User user = h2Repository.findByName(name) ;
+        final User USER = h2Repository.findByName(NAME) ;
 
-        assertEquals(user.getName(),name);
+        assertEquals(USER.getName(), NAME);
 
-        assertEquals(user.getSurname(),surName);
+        assertEquals(USER.getSurname(), SUR_NAME);
 
-        assertEquals(user.getAge(),56);
+        assertEquals(USER.getAge(),56);
 
         assertTrue(response2.getStatusCode().is2xxSuccessful()) ;
     }
@@ -157,7 +153,7 @@ class UserControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriDeleteIdTrue),
+                createURLWithPort(URI_DELETE_ID_TRUE),
                 HttpMethod.DELETE, entity, String.class);
 
         assertTrue ( response2.getStatusCode().is2xxSuccessful() );
@@ -170,7 +166,7 @@ class UserControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriGetIdFalse),
+                createURLWithPort(URI_GET_ID_FALSE),
                 HttpMethod.GET, entity, String.class);
 
         assertTrue( response2.getStatusCode().is4xxClientError() );
@@ -182,7 +178,7 @@ class UserControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriPostUserFalse),
+                createURLWithPort(URI_POST_USER_FALSE),
                 HttpMethod.POST, entity, String.class);
         assertTrue ( response2.getStatusCode().is4xxClientError() );
     }
@@ -192,7 +188,7 @@ class UserControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort(uriGetNameFalse),
+                createURLWithPort(URI_GET_NAME_FALSE),
                 HttpMethod.GET, entity, String.class);
 
         assertTrue ( response2.getStatusCode().is4xxClientError() );
@@ -202,10 +198,10 @@ class UserControllerIntegrationTest {
     @Test
     void updateUser_whenGivenIdNotExists_thenReturnValidResponse()  {
 
-        HttpEntity<User> entity = new HttpEntity<>(new User(16767, name, surName, 56));
+        HttpEntity<User> entity = new HttpEntity<>(new User(16767, NAME, SUR_NAME, 56));
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort( uriPutUser  ),
+                createURLWithPort(URI_PUT_USER),
                 HttpMethod.PUT, entity, String.class);
 
         assertTrue( response2.getStatusCode().is4xxClientError() );
@@ -217,7 +213,7 @@ class UserControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> response2 = restTemplate.exchange(
-                createURLWithPort( uriDeleteIdFalse ),
+                createURLWithPort(URI_DELETE_ID_FALSE),
                 HttpMethod.DELETE, entity, String.class);
 
         assertTrue ( response2.getStatusCode().is4xxClientError() );

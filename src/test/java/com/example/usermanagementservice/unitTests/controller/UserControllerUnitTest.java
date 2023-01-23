@@ -11,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 
@@ -34,44 +32,41 @@ class UserControllerUnitTest {
     @MockBean
     UserService userService ;
 
-    static final String name1 = "John" ;
-
-    static final String surName1 = "Lwe" ;
-
-    static final String notUsed = "Jim" ;
-
-    static final String name2 = "George" ;
-
-    static final String surName2 = "Georgiou" ;
+    static final String NAME_1 = "John" ;
+    static final String SUR_NAME_1 = "Lwe" ;
+    static final String NAME_2 = "George" ;
+    static final String SUR_NAME_2 = "Georgiou" ;
 
 
     @Test
     void addUser_thenReturnValidResponse() throws Exception {
 
-        User user1 = new User (3,name2,surName1,77);
-        Mockito.when(userService.addUser(user1)).thenReturn(user1);
-        ResponseEntity<Void> expected = userController.addUser(name2,surName1,77) ;
+        final User USER_1 = new User (3, NAME_2, SUR_NAME_1,77);
+        
+        Mockito.when(userService.addUser(USER_1)).thenReturn(USER_1);
+        ResponseEntity<Void> expected = userController.addUser(NAME_2, SUR_NAME_1,77) ;
 
         assertTrue(expected.getStatusCode().is2xxSuccessful());
-        assertThat(expected.getBody()).isNull();
+        assertNull(expected.getBody());
 
     }
 
     @Test
     void updateUser_whenGivenIdExists_thenReturnValidResponse() throws Exception {
      
-        User user2 = new User (4,name2,surName2,55);
-        doNothing().when(userService).updateUser(user2);
-        ResponseEntity<Void> expected = userController.updateUser(user2) ;
+        final User USER_2 = new User (4, NAME_2, SUR_NAME_2,55);
+        
+        doNothing().when(userService).updateUser(USER_2);
+        ResponseEntity<Void> expected = userController.updateUser(USER_2) ;
 
         assertTrue(expected.getStatusCode().is2xxSuccessful() );
     }
 
     @Test
     void findUserById_whenUserExists_thenReturnValidResponseAndUser() throws Exception {
-        User user1 = new User (3,name2,surName1,77);
-        Mockito.when(userService.getUserById(3)).thenReturn(Optional.of(user1));
-        ResponseEntity<Optional<User>> expected = userController.findUserById(user1.getId()) ;
+        final User USER_1 = new User (3, NAME_2, SUR_NAME_1,77);
+        Mockito.when(userService.getUserById(3)).thenReturn(Optional.of(USER_1));
+        ResponseEntity<Optional<User>> expected = userController.findUserById(USER_1.getId()) ;
 
         assertThat(Objects.requireNonNull(expected.getBody()).get().getId()).isEqualTo(3);
         assertTrue(expected.getStatusCode().is2xxSuccessful()) ;
@@ -79,27 +74,27 @@ class UserControllerUnitTest {
 
     @Test
     void findUsersByName_whenUserExists_thenReturnValidResponseAndListOfUsers()  {
+
+        final User USER_1 = new User (3, NAME_2, SUR_NAME_1,77);
+        final User USER_2 = new User (4, NAME_2, SUR_NAME_2,55);
         
-        User user1 = new User (3,name2,surName1,77);
-        User user2 = new User (4,name2,surName2,55);
-        
-        List<User> userList = new ArrayList<>(Arrays.asList(user1,user2));
-        Mockito.when(userService.getUserByName(user1.getName())).thenReturn(userList);
-        ResponseEntity<List<User>> expected = userController.findUserByName(user1.getName()) ;
+        final List<User> USERS = new ArrayList<>(Arrays.asList(USER_1,USER_2));
+        Mockito.when(userService.getUserByName(USER_1.getName())).thenReturn(USERS);
+        ResponseEntity<List<User>> expected = userController.findUserByName(USER_1.getName()) ;
 
         assertTrue(expected.getStatusCode().is2xxSuccessful());
-        assertThat(Objects.requireNonNull(expected.getBody()).get(0).getName()).isEqualTo(user1.getName());
-        assertThat(expected.getBody().get(1).getName()).isEqualTo(user2.getName());
+        assertThat(Objects.requireNonNull(expected.getBody()).get(0).getName()).isEqualTo(USER_1.getName());
+        assertThat(expected.getBody().get(1).getName()).isEqualTo(USER_2.getName());
     }
 
     @Test
     void findAll_whenUsersExists_thenReturnValidResponse() throws Exception {
 
-        User user1 = new User (3,name2,surName1,77);
-        User user2 = new User (4,name2,surName2,55);
+        final User USER_1 = new User (3, NAME_1, SUR_NAME_1,77);
+        final User USER_2 = new User (4, NAME_2, SUR_NAME_2,55);
         
-        List<User> users = new ArrayList<>(Arrays.asList(user1,user2));
-        Mockito.when(userService.getAllUsers()).thenReturn(users);
+        final  List<User> USERS = new ArrayList<>(Arrays.asList(USER_1,USER_2));
+        Mockito.when(userService.getAllUsers()).thenReturn(USERS);
         ResponseEntity <List<User>> expected = userController.findAll() ;
 
         assertTrue(expected.getStatusCode().is2xxSuccessful());
@@ -109,9 +104,9 @@ class UserControllerUnitTest {
     @Test
     void deleteUserById_whenUserExists_thenReturnValidResponse() throws Exception {
         
-        User user1 = new User (3,name2,surName1,77);
-        doNothing().when(userService).deleteUser((user1).getId());
-        ResponseEntity<Optional<String>> expected = userController.deleteUser(user1.getId()) ;
+        final User USER_1 = new User (3, NAME_2, SUR_NAME_1,77);
+        doNothing().when(userService).deleteUser((USER_1).getId());
+        ResponseEntity<Optional<String>> expected = userController.deleteUser(USER_1.getId()) ;
 
         assertTrue(expected.getStatusCode().is2xxSuccessful());
         assertThat(expected.getBody()).isNull();
@@ -120,10 +115,10 @@ class UserControllerUnitTest {
     @Test
     void updateUser_whenGivenIdNotExists_thenReturn_404Response() throws Exception {
 
-        User user1 = new User (3566,name2,surName1,77);
-        
-        doThrow(new Exception()).when(userService).updateUser(user1);
-        ResponseEntity<Void> expected = userController.updateUser(user1) ;
+        final User USER_1 = new User (3566, NAME_2, SUR_NAME_1,77);
+
+        doThrow(new Exception()).when(userService).updateUser(USER_1);
+         ResponseEntity<Void> expected = userController.updateUser(USER_1) ;
 
         assertTrue(expected.getStatusCode().is4xxClientError());
         assertThat(expected.getBody()).isNull();
@@ -141,10 +136,19 @@ class UserControllerUnitTest {
 
     @Test
     void findUsersByName_whenUserNotExists_thenReturnNonValidResponse()  {
-        User user1 = new User (3566,name2,surName1,77);
+        final User USER_1 = new User (3566, NAME_2, SUR_NAME_1,77);
 
-        Mockito.when(userService.getUserByName(user1.getName())).thenReturn(null);
-        ResponseEntity<List<User>> expected = userController.findUserByName(name2) ;
+        Mockito.when(userService.getUserByName(USER_1.getName())).thenReturn(null);
+        ResponseEntity<List<User>> expected = userController.findUserByName(NAME_2) ;
+
+        assertTrue(expected.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    void findAll_whenUsersNotExists_thenReturnNonValidResponse() throws Exception {
+
+        Mockito.when(userService.getAllUsers()).thenReturn(List.of() );
+        ResponseEntity <List<User>> expected = userController.findAll() ;
 
         assertTrue(expected.getStatusCode().is4xxClientError());
     }
@@ -158,3 +162,4 @@ class UserControllerUnitTest {
         assertTrue(expected.getStatusCode().is4xxClientError());
     }
 }
+

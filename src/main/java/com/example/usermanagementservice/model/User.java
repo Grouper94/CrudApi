@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "userdb")
@@ -15,7 +16,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema
-public class User {
+public  class User {
 
     public User ( String name, String surname, int age ) {
 
@@ -37,5 +38,11 @@ public class User {
     private String surname;
 
     private int age;
+
+    public String getUserOccupation() { return null;}
+
+    public  String   getUserType() {return null ;}
+
+
 
 }
