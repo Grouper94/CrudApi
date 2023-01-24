@@ -3,22 +3,28 @@ package com.example.usermanagementservice.model;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.List;
 
-@Entity
 @Table(name = "userdb")
-@Data
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING,
+     //   name = "TYPE")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema
-public  class User {
+public abstract   class User {
 
-    public User ( String name, String surname, int age ) {
+    public User ( String name, String surname, int age  ) {
 
         this.name = name;
         this.surname = surname;
@@ -27,6 +33,8 @@ public  class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+ //strategy = GenerationType.IDENTITY)
     @Parameter(required = false, hidden = true)
     private  Integer id;
 
@@ -38,10 +46,14 @@ public  class User {
     private String surname;
 
     private int age;
+    @Column(name = "diffages")
+    protected String userType;
 
-    public String getUserOccupation() { return null;}
+    @Column(name = "occupation")
+    protected String userOccupation ;
 
-    public  String   getUserType() {return null ;}
+    public abstract String getUserOccupation() ;
+    public abstract String  getUserType() ;
 
 
 

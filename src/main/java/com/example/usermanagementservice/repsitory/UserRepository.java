@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository< User, Integer > {
 
-    < S extends User > Iterable< S > save( Iterable< S > user ) throws IllegalArgumentException;
+     User  save( User user ) throws IllegalArgumentException;
 
     Optional< User > findById( Integer id ) throws IllegalArgumentException;
 

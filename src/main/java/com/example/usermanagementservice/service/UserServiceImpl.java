@@ -1,6 +1,7 @@
 package com.example.usermanagementservice.service;
 
 import com.example.usermanagementservice.exceptions.IdNotFoundException;
+import com.example.usermanagementservice.model.GetUserFactory;
 import com.example.usermanagementservice.repsitory.UserRepository;
 import com.example.usermanagementservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,14 @@ public class  UserServiceImpl implements UserService    {
 
     @Override
     public User addUser(User user)  {
-        return userRepository.save(user);
+      //  User usr = userRepository.save(user);
+      ////System.out.println(usr);
+        try {
+            return userRepository.save(user);
+        } catch  (Exception e)  {
+            System.out.println(e);
+        }
+        return  userRepository.save(user);
     }
 
     @Override
@@ -48,9 +56,12 @@ public class  UserServiceImpl implements UserService    {
 
         Random rand = new Random();
 
+
         for (int i = 0 ; i < X ; i++)
         {
-            User user = new User();
+            GetUserFactory getUserFactory = new GetUserFactory() ;
+
+            User user = getUserFactory.getUser(rand.nextInt(99)) ;
 
             user.setName(randomNames.get(rand.nextInt(randomSurNames.size())));
 

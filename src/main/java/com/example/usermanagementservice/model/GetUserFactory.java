@@ -5,7 +5,7 @@ public class GetUserFactory {
     public User getUser(int  age) {
 
 
-        if ( age > 0  &  age <= 18 ) {
+        if ( age >= 1  &  age <= 18 ) {
             return new YoungUser() ;
         }
 

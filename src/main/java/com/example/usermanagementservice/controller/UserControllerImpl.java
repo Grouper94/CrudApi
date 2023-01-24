@@ -25,7 +25,15 @@ public class UserControllerImpl implements UserController {
     @PostMapping("/AddUser")
     public ResponseEntity<Void>addUser(@RequestParam String name ,@RequestParam String surname , @RequestParam int age) {
 
-        User user = new User(name,surname,age);
+      //  User user = new User(name,surname,age);
+        GetUserFactory getUserFactory = new GetUserFactory() ;
+        User user = getUserFactory.getUser(age) ;
+
+        user.setName(name);
+        user.setSurname(surname);
+        user.setAge(age);
+        System.out.println(user);
+
 
         try {
             userService.addUser(user);
