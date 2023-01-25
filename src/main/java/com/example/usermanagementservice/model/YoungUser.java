@@ -1,12 +1,10 @@
 package com.example.usermanagementservice.model;
 
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-
-@Entity
-//@DiscriminatorValue("YoungUser")
 public class YoungUser extends User {
+
+    String userOccupation ;
+    String userType ;
     public YoungUser  () {
         super();
         this.userOccupation = "School" ;
@@ -23,19 +21,13 @@ public class YoungUser extends User {
 
 
     @Override
-    public String getUserOccupation() {
-       return userOccupation  ;
-
+    public String Occupation() {
+       return "userOccupation : "+userOccupation  ;
     }
 
     @Override
-    public String getUserType () {
-         return userType ;
+    public String Type () {
+         return "userType : " + userType ;
     }
-
-
-
-
-
 
 }

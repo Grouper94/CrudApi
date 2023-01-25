@@ -1,8 +1,14 @@
 package com.example.usermanagementservice.model;
 
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Entity;
+
+@Component
 public class GetUserFactory {
 
-    public User getUser(int  age) {
+    public User
+    getUser(int  age) {
 
 
         if ( age >= 1  &  age <= 18 ) {

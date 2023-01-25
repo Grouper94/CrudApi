@@ -1,40 +1,33 @@
 package com.example.usermanagementservice.controller;
 
 import com.example.usermanagementservice.exceptions.IdNotFoundException;
-import com.example.usermanagementservice.model.GetUserFactory;
-import com.example.usermanagementservice.model.User;
-import com.example.usermanagementservice.model.UserInfo;
+import com.example.usermanagementservice.model.*;
+import com.example.usermanagementservice.repsitory.UserRepository;
 import com.example.usermanagementservice.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+@ToString
 @RestController
 @RequestMapping("/crud")
 @AllArgsConstructor
 public class UserControllerImpl implements UserController {
     private final UserService userService ;
 
+    private final UserRepository userRepository;
+
+
     @Override
     @PostMapping("/AddUser")
     public ResponseEntity<Void>addUser(@RequestParam String name ,@RequestParam String surname , @RequestParam int age) {
 
-      //  User user = new User(name,surname,age);
-        GetUserFactory getUserFactory = new GetUserFactory() ;
-        User user = getUserFactory.getUser(age) ;
-
-        user.setName(name);
-        user.setSurname(surname);
-        user.setAge(age);
-        System.out.println(user);
-
-
+        User user = new User(name,surname,age);
         try {
             userService.addUser(user);
         } catch (Exception e) {
@@ -46,9 +39,8 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @PutMapping("/Update")
-    public ResponseEntity<Void> updateUser(@RequestBody  User user)  {
+    public ResponseEntity<Void> updateUser (@RequestBody User user) {
         try {
-            userService.getUserById(user.getId());
             userService.updateUser(user);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -70,6 +62,9 @@ public class UserControllerImpl implements UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        user.toString() ;
+        System.out.println(user.toString());
+
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
@@ -83,23 +78,8 @@ public class UserControllerImpl implements UserController {
         if(  users == null  ||  users.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+
         return new ResponseEntity<>(users, HttpStatus.OK);
-
-
-
-//        try {
-//            users = userService.getUserByName(name);
-//            System.out.println(users);
-//
-//        }
-//         catch (Exception e) {
-//             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-////        if (users.isEmpty())
-////            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-
-
     }
 
 
@@ -154,10 +134,12 @@ public class UserControllerImpl implements UserController {
     @DeleteMapping("/Delete")
     public ResponseEntity<Optional<String>> deleteAllUsers() {
         try {
+
             userService.deleteAllUsers();
+
         } catch (Exception e) {
-            Optional <String> msg =Optional.of( "Noooooo Waay");
-            return new ResponseEntity<>(msg,HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>( HttpStatus.OK);
     }
@@ -175,9 +157,27 @@ public class UserControllerImpl implements UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        User usr =  getUserFactory.getUser(user.get().getAge());
+         User usr =  getUserFactory.getUser(user.get().getAge()) ;
 
-        return new ResponseEntity<>( List.of(usr.getUserType(), usr.getUserOccupation()),HttpStatus.OK);
+//        #1 Sol
+//         AdultUser adultUser = new AdultUser() ;
+//         OldUser   oldUser   = new OldUser() ;
+//         YoungUser youngUser = new YoungUser() ;
+//
+//        if (    usr.getClass().equals(  adultUser.getClass()  ) ) {
+//            adultUser = (AdultUser) usr;
+//            return new ResponseEntity<>( List.of(adultUser.getUserType(),adultUser.getUserOccupation()),HttpStatus.OK);
+//        }
+//        else if ( usr.getClass().equals(youngUser.getClass())) {
+//            youngUser = (YoungUser) usr;
+//            return new ResponseEntity<>( List.of(youngUser.getUserType(),youngUser.getUserOccupation()),HttpStatus.OK);
+//        }
+//        else {
+//            oldUser = (OldUser) usr;
+//            return new ResponseEntity<>( List.of(oldUser.getUserType(),oldUser.getUserOccupation()),HttpStatus.OK);
+//        }
+
+        return new ResponseEntity<>( List.of(usr.Type(),usr.Occupation()),HttpStatus.OK);
     }
 
     @Override

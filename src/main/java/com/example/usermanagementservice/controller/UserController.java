@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public interface UserController {
              @ApiResponse(responseCode = "200",description = "User has been Added Successfully"),
              @ApiResponse(responseCode = "404", description = "User has Not Been  Created")
      })
-     ResponseEntity<Void> addUser(String name,String surname,int age) ;
+     ResponseEntity<Void> addUser (String name,String surname,int age) ;
 
      @Operation(tags = {"Note"},
              summary = "Update an EXISTING user's data")
@@ -26,7 +27,7 @@ public interface UserController {
              @ApiResponse(responseCode = "200",description = "User has been UPDatAdded Successfully"),
              @ApiResponse(responseCode = "404", description = "Id Does Not exist")
      })
-     ResponseEntity<Void> updateUser(User user) throws Exception;
+     ResponseEntity<Void> updateUser ( User user) throws Exception;
 
 
      @Operation(

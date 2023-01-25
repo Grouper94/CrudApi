@@ -3,13 +3,15 @@ package com.example.usermanagementservice.model;
 import javax.persistence.DiscriminatorValue;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 
 
-
-@Entity
-//@DiscriminatorValue("OldUser")
 public class OldUser extends User {
+
+    String userOccupation ;
+
+    String userType ;
 
     public OldUser() {
         super();
@@ -24,12 +26,12 @@ public class OldUser extends User {
     }
 
     @Override
-    public String getUserOccupation() {
-        return userOccupation   ;
+    public String Occupation() {
+        return "userOccupation : "+userOccupation  ;
     }
 
     @Override
-    public String getUserType () {
-        return  userType  ;
+    public String Type () {
+        return "userType : " + userType ;
     }
 }

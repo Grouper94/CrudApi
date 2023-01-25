@@ -23,22 +23,19 @@ public class  UserServiceImpl implements UserService    {
 
     @Override
     public User addUser(User user)  {
-      //  User usr = userRepository.save(user);
-      ////System.out.println(usr);
-        try {
-            return userRepository.save(user);
-        } catch  (Exception e)  {
-            System.out.println(e);
-        }
-        return  userRepository.save(user);
+
+        return userRepository.save(user);
     }
 
     @Override
     public void updateUser(User user) {
 
         if(userRepository.findById(user.getId()).isPresent()) {
+
             userRepository.save(user);
-        }else {
+
+       }else {
+
             throw new IdNotFoundException() ;
         }
     }
@@ -59,19 +56,13 @@ public class  UserServiceImpl implements UserService    {
 
         for (int i = 0 ; i < X ; i++)
         {
-            GetUserFactory getUserFactory = new GetUserFactory() ;
-
-            User user = getUserFactory.getUser(rand.nextInt(99)) ;
+            User user = new User() ;
 
             user.setName(randomNames.get(rand.nextInt(randomSurNames.size())));
 
             user.setSurname(randomSurNames.get(rand.nextInt(randomSurNames.size())));
 
             user.setAge(rand.nextInt(99));
-
-            System.out.println(X);
-
-            System.out.println(user);
 
             userRepository.save(user);
         }
@@ -88,7 +79,7 @@ public class  UserServiceImpl implements UserService    {
     @Override
     public List<User> getAllUsers()  {
 
-        return userRepository.findAll();
+         return userRepository.findAll();
     }
 
     @Override
@@ -100,12 +91,12 @@ public class  UserServiceImpl implements UserService    {
 
     @Override
     public void deleteUser(int id)  {
-//       if( userRepository.existsById(id))
-//       {
+       if( userRepository.existsById(id))
+       {
            userRepository.deleteById(id);
-//       } else {
-//           throw new RuntimeException() ;
-//       }
+       } else {
+           throw new RuntimeException() ;
+       }
     }
 
     @Override

@@ -10,19 +10,15 @@ import javax.validation.constraints.Size;
 
 @Table(name = "userdb")
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+//@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING,
-     //   name = "TYPE")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema
-public abstract   class User {
+public  class User {
 
     public User ( String name, String surname, int age  ) {
 
@@ -33,8 +29,6 @@ public abstract   class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
- //strategy = GenerationType.IDENTITY)
     @Parameter(required = false, hidden = true)
     private  Integer id;
 
@@ -46,14 +40,10 @@ public abstract   class User {
     private String surname;
 
     private int age;
-    @Column(name = "diffages")
-    protected String userType;
 
-    @Column(name = "occupation")
-    protected String userOccupation ;
 
-    public abstract String getUserOccupation() ;
-    public abstract String  getUserType() ;
+     public  String Occupation() {return null;}
+     public  String Type()  {return null ;}
 
 
 
