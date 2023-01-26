@@ -17,16 +17,13 @@ public class YoungUser extends User {
         this.userType = "Young" ;
     }
 
-
-
-
     @Override
-    public String Occupation() {
-       return "userOccupation : "+userOccupation  ;
+    public String gEtOccupation() {
+       return "userOccupation : "+ userOccupation  ;
     }
 
     @Override
-    public String Type () {
+    public String gEtType() {
          return "userType : " + userType ;
     }
 

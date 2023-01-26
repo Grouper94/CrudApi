@@ -1,11 +1,5 @@
 package com.example.usermanagementservice.model;
 
-import javax.persistence.DiscriminatorValue;
-
-import javax.persistence.Entity;
-import javax.persistence.Transient;
-
-
 
 public class OldUser extends User {
 
@@ -26,12 +20,12 @@ public class OldUser extends User {
     }
 
     @Override
-    public String Occupation() {
+    public String gEtOccupation() {
         return "userOccupation : "+userOccupation  ;
     }
 
     @Override
-    public String Type () {
+    public String gEtType() {
         return "userType : " + userType ;
     }
 }

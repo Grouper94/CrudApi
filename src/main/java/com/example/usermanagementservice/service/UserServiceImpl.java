@@ -5,7 +5,6 @@ import com.example.usermanagementservice.repsitory.UserRepository;
 import com.example.usermanagementservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 @Service
@@ -41,11 +40,11 @@ public class  UserServiceImpl implements UserService    {
     @Override
     public void addXRandomUsers(int X)  {
 
-        List<String> randomNames =  new ArrayList<String>() ;
+        List<String> randomNames =  new ArrayList<>() ;
 
         randomNames.addAll(Arrays.asList("John", "George", "Olaf", "Andreas"));
 
-        List<String> randomSurNames =  new ArrayList<String>() ;
+        List<String> randomSurNames =  new ArrayList<>() ;
 
         randomSurNames.addAll(Arrays.asList("Johnson", "Georgiou", "Olafson", "Andreou"));
 

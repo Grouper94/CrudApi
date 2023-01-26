@@ -42,8 +42,8 @@ public  class User {
     private int age;
 
 
-     public  String Occupation() {return null;}
-     public  String Type()  {return null ;}
+     public  String gEtOccupation() {return null;}
+     public  String gEtType()  {return null ;}
 
 
 

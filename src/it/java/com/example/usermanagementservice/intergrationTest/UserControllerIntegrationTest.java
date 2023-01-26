@@ -17,8 +17,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -129,7 +127,7 @@ class UserControllerIntegrationTest {
     @Test
     void updateUser_whenGivenIdExists_thenReturnValidResponse()  {
 
-        HttpEntity<User> entity = new HttpEntity<User>(new User(1, NAME, SUR_NAME,56));
+        HttpEntity<User> entity = new HttpEntity<>(new User(1, NAME, SUR_NAME,56));
 
         ResponseEntity<String> response2 = restTemplate.exchange(
                 createURLWithPort(URI_PUT_USER),

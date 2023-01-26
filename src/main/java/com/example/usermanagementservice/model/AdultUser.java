@@ -1,9 +1,5 @@
 package com.example.usermanagementservice.model;
 
-import javax.persistence.*;
-
-
-
 public class AdultUser extends User {
 
     String userOccupation ;
@@ -22,12 +18,12 @@ public class AdultUser extends User {
 
 
     @Override
-    public String Occupation() {
+    public String gEtOccupation() {
         return "userOccupation : "+userOccupation  ;
     }
 
     @Override
-    public String Type () {
+    public String gEtType() {
         return "userType : " + userType ;
     }
 }

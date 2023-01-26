@@ -9,7 +9,6 @@ import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -156,7 +155,7 @@ public class UserControllerImpl implements UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-         User usr =  getUserFactory.getUser(user.get().getAge()) ;
+          user = Optional.ofNullable(getUserFactory.getUser(user.get().getAge()));
 
 //        #1 Sol
 //         AdultUser adultUser = new AdultUser() ;
@@ -176,7 +175,7 @@ public class UserControllerImpl implements UserController {
 //            return new ResponseEntity<>( List.of(oldUser.getUserType(),oldUser.getUserOccupation()),HttpStatus.OK);
 //        }
 
-        return new ResponseEntity<>( List.of(usr.Type(),usr.Occupation()),HttpStatus.OK);
+        return new ResponseEntity<>( List.of(user.get().gEtType(),user.get().gEtOccupation()),HttpStatus.OK);
     }
 
     @Override
