@@ -1,7 +1,9 @@
 package com.example.usermanagementservice.intergrationTest;
 
 import com.example.usermanagementservice.model.User;
+import com.example.usermanagementservice.repsitory.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.minidev.json.JSONArray;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +19,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.DeflaterOutputStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -52,10 +59,12 @@ class UserControllerIntegrationTest {
     static final String URI_GET_ID_FALSE =  "/crud/findUserById/10" ;
     static final String URI_GET_NAME_FALSE =  "/crud/findUserByName/Elias" ;
     static final String URI_POST_USER_FALSE =  "/crud/AddUser?name=&&surname=Pierson&age=" ;
-
-    static final String URI_DELETE_ID_FALSE =  "/crud/Delete/544" ;
+    static final  String URI_DELETE_ID_FALSE =  "/crud/Delete/544" ;
+    static final String URI_GET_TYPE_BY_ID_TRUE =  "/crud/findUserTypeById/1" ;
 
     private static final String LOCALHOST_PREFIX = "http://localhost:";
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     void findAll_whenUsersExists_thenReturnValidResponse() throws Exception {
@@ -216,6 +225,51 @@ class UserControllerIntegrationTest {
         assertTrue ( response2.getStatusCode().is4xxClientError() );
         assertFalse (h2Repository.existsById(544) );
     }
+
+    @Test
+    void  addNonValidUser_thenReturnNonValidResponse()  {
+
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<String> response2 = restTemplate.exchange(
+                createURLWithPort(URI_POST_USER_TRUE),
+                HttpMethod.POST, entity, String.class);
+
+        assertTrue(response2.getStatusCode().is2xxSuccessful()) ;
+
+        final User ACTUAL = h2Repository.findByName(NAME_1);
+
+        assertEquals(NAME_1,ACTUAL.getName());
+
+        assertEquals(SUR_NAME_1,ACTUAL.getSurname());
+
+        assertEquals(41,ACTUAL.getAge());
+
+        h2Repository.deleteById(ACTUAL.getId());
+
+    }
+
+    @Test
+    void  findUserOccupationAndTypeById_thenReturnValidResponse() throws JSONException {
+
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+        List<String> typeList = new ArrayList<>() ;
+        typeList.add( "userType : Adult");
+        typeList.add( "userOccupation : Work");
+
+        String expected =  JSONArray.toJSONString(typeList);
+
+        ResponseEntity<String> response2 = restTemplate.exchange(
+                createURLWithPort(URI_GET_TYPE_BY_ID_TRUE),
+                HttpMethod.GET, entity, String.class);
+
+        System.out.println(userRepository.findAll());
+
+        JSONAssert.assertEquals(expected, response2.getBody(), false);
+
+    }
+
     String createURLWithPort(String uri) {
         return LOCALHOST_PREFIX + port + uri;
     }

@@ -156,6 +156,20 @@ class UserServiceUnitTest {
 
         assertThrows(UserNotFoundException.class ,()-> service.deleteUser(123));
     }
+
+    @Test
+    void addNonValidUser_thenReturnUser()  {
+
+        final User ACTUAL = new User(1, NAME_1, SUR_NAME_1, 23);
+
+        when(userRepository.save(null)).thenThrow(RuntimeException.class );
+
+        assertThrows(RuntimeException.class ,()-> service.addUser(null));
+
+
+    }
+
+
 }
 
 

@@ -160,5 +160,18 @@ class UserControllerUnitTest {
 
         assertTrue(expected.getStatusCode().is4xxClientError());
     }
+
+//    @Test
+//    void addNonValidUser_thenReturnNonValidResponse() throws Exception {
+//
+//        final User USER_1 = new User ();
+//
+//        Mockito.when(userService.addUser(null)).thenReturn(null) ;
+//        ResponseEntity<Void> expected = userController.addUser(null,null,USER_1.getAge()) ;
+//        System.out.println(expected.getStatusCodeValue());
+//        assertTrue(expected.getStatusCode().is4xxClientError());
+//        //assertNull(expected.getBody());
+//
+//    }
 }
 

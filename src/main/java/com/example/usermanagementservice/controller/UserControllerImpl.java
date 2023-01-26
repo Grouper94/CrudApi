@@ -32,7 +32,7 @@ public class UserControllerImpl implements UserController {
         User user = new User(name,surname,age);
         try {
             userService.addUser(user);
-        } catch (Exception e) {
+        } catch (Exception rte ) {
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
         }
 
@@ -148,7 +148,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/findUserTypeById/{id}")
-     public ResponseEntity <List<String>> findUserOccupationAndTypeById(Integer id) {
+     public ResponseEntity <List<String>> findUserOccupationAndTypeById(@PathVariable Integer id) {
 
         GetUserFactory getUserFactory = new GetUserFactory() ;
         Optional<User> user ;
@@ -160,6 +160,10 @@ public class UserControllerImpl implements UserController {
         }
 
           user = Optional.ofNullable(getUserFactory.getUser(user.get().getAge()));
+
+
+
+
 
 //        #1 Sol
 //         AdultUser adultUser = new AdultUser() ;
@@ -204,8 +208,6 @@ public class UserControllerImpl implements UserController {
 
         List<User> users = allUsers.stream()
                 .filter( user -> user.getAge() > age  &&  user.greaterThanGivenName(name)    )
-//                .filter( user -> user.getAge() > age)
-//                .filter(user -> user.greaterThanGivenName(name))
                 .sorted(Comparator.comparing(User::getName))
                 .collect(Collectors.toList());
 
