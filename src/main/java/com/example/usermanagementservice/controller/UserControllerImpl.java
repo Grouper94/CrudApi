@@ -1,6 +1,6 @@
 package com.example.usermanagementservice.controller;
 
-import com.example.usermanagementservice.exceptions.IdNotFoundException;
+import com.example.usermanagementservice.exceptions.UserNotFoundException;
 import com.example.usermanagementservice.model.*;
 import com.example.usermanagementservice.repsitory.UserRepository;
 import com.example.usermanagementservice.service.UserService;
@@ -20,7 +20,6 @@ import java.util.Optional;
 public class UserControllerImpl implements UserController {
     private final UserService userService ;
 
-    private final UserRepository userRepository;
 
 
     @Override
@@ -58,7 +57,7 @@ public class UserControllerImpl implements UserController {
         try {
             user = userService.getUserById(id);
         }
-        catch (IdNotFoundException infe){
+        catch (UserNotFoundException unfe){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -108,7 +107,7 @@ public class UserControllerImpl implements UserController {
 
             userService.deleteUser(id);
 
-        } catch (IdNotFoundException infe){
+        } catch (UserNotFoundException unfe){
 
             Optional <String> msg =Optional.of( "Id not Found");
             return new ResponseEntity<>(msg,HttpStatus.NOT_FOUND);
@@ -153,7 +152,7 @@ public class UserControllerImpl implements UserController {
         try {
            user = userService.getUserById(id);
 
-        } catch (IdNotFoundException idfe ) {
+        } catch (UserNotFoundException idfe ) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

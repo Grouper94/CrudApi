@@ -1,12 +1,10 @@
 package com.example.usermanagementservice.service;
 
-import com.example.usermanagementservice.exceptions.IdNotFoundException;
-import com.example.usermanagementservice.model.GetUserFactory;
+import com.example.usermanagementservice.exceptions.UserNotFoundException;
 import com.example.usermanagementservice.repsitory.UserRepository;
 import com.example.usermanagementservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.*;
 
@@ -36,7 +34,7 @@ public class  UserServiceImpl implements UserService    {
 
        }else {
 
-            throw new IdNotFoundException() ;
+            throw new UserNotFoundException() ;
         }
     }
 
@@ -73,7 +71,7 @@ public class  UserServiceImpl implements UserService    {
     public Optional<User> getUserById( Integer id)  {
 
         return Optional.ofNullable(userRepository.findById(id)
-                .orElseThrow(IdNotFoundException::new));
+                .orElseThrow(UserNotFoundException::new));
     }
 
     @Override
@@ -91,11 +89,10 @@ public class  UserServiceImpl implements UserService    {
 
     @Override
     public void deleteUser(int id)  {
-       if( userRepository.existsById(id))
-       {
+       if( userRepository.existsById(id)) {
            userRepository.deleteById(id);
        } else {
-           throw new RuntimeException() ;
+           throw new UserNotFoundException() ;
        }
     }
 

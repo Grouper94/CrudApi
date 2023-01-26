@@ -1,6 +1,6 @@
 package com.example.usermanagementservice.unitTests.service;
 
-import com.example.usermanagementservice.exceptions.IdNotFoundException;
+import com.example.usermanagementservice.exceptions.UserNotFoundException;
 import com.example.usermanagementservice.model.User;
 import com.example.usermanagementservice.repsitory.UserRepository;
 import com.example.usermanagementservice.service.UserServiceImpl;
@@ -104,11 +104,11 @@ class UserServiceUnitTest {
 
     @Test
     void deleteUserById_whenUserExists_thenReturnVoid()  {
-       final User ACTUAL = new User(1, NAME_1, SUR_NAME_1, 23) ;
 
+       final User ACTUAL = new User(1, NAME_1, SUR_NAME_1, 23) ;
+       when(userRepository.existsById(ACTUAL.getId())).thenReturn(Boolean.TRUE) ;
         doNothing().when(userRepository).deleteById((ACTUAL).getId());
-        service.deleteUser(1);
-        assertFalse(userRepository.existsById(1));
+
         assertAll(()->service.deleteUser(1));
     }
 
@@ -134,9 +134,9 @@ class UserServiceUnitTest {
     @Test
     void updateUser_whenIdNotExists_thenReturnVoid()  {
 
-       final User ACTUAL = new User(4554, NAME_2, SUR_NAME_2, 23);
-        ACTUAL.setAge(25);
-        assertThrows(IdNotFoundException.class ,()-> service.updateUser(ACTUAL));
+        final User ACTUAL = new User(4554, NAME_2, SUR_NAME_2, 23);
+
+        assertThrows(UserNotFoundException.class ,()-> service.updateUser(ACTUAL));
     }
 
     @Test
@@ -149,11 +149,13 @@ class UserServiceUnitTest {
         assertTrue(USERS.isEmpty()) ;
     }
 
+    @Test
+    void deleteUserById_whenUserNotExists_thenReturnVoid()  {
 
+        when(userRepository.existsById(123)).thenReturn(Boolean.FALSE) ;
 
-
-
-
+        assertThrows(UserNotFoundException.class ,()-> service.deleteUser(123));
+    }
 }
 
 

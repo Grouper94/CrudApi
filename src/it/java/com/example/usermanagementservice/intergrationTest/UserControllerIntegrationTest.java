@@ -215,7 +215,6 @@ class UserControllerIntegrationTest {
         ResponseEntity<String> response2 = restTemplate.exchange(
                 createURLWithPort(URI_DELETE_ID_FALSE),
                 HttpMethod.DELETE, entity, String.class);
-
         assertTrue ( response2.getStatusCode().is4xxClientError() );
         assertFalse (h2Repository.existsById(544) );
     }

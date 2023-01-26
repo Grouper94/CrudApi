@@ -2,6 +2,7 @@ package com.example.usermanagementservice.unitTests.controller;
 
 import com.example.usermanagementservice.controller.UserController;
 import com.example.usermanagementservice.controller.UserControllerImpl;
+import com.example.usermanagementservice.exceptions.UserNotFoundException;
 import com.example.usermanagementservice.model.User;
 import com.example.usermanagementservice.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-
 import java.util.*;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -117,8 +116,8 @@ class UserControllerUnitTest {
 
         final User USER_1 = new User (3566, NAME_2, SUR_NAME_1,77);
 
-        doThrow(new Exception()).when(userService).updateUser(USER_1);
-         ResponseEntity<Void> expected = userController.updateUser(USER_1) ;
+        doThrow(new UserNotFoundException()).when(userService).updateUser(USER_1);
+        ResponseEntity<Void> expected = userController.updateUser(USER_1) ;
 
         assertTrue(expected.getStatusCode().is4xxClientError());
         assertThat(expected.getBody()).isNull();
@@ -127,7 +126,7 @@ class UserControllerUnitTest {
 
     @Test
     void findUserById_whenUserNotExists_thenReturn_404Response() throws Exception {
-        doThrow(new Exception()).when(userService).getUserById(101);
+        doThrow(new UserNotFoundException()).when(userService).getUserById(101);
 
         ResponseEntity<Optional<User>> expected = userController.findUserById(101) ;
 
@@ -155,7 +154,7 @@ class UserControllerUnitTest {
 
     @Test()
     void deleteUserById_whenUserNotExists_thenReturn404Response() throws Exception {
-        doThrow(new Exception()).when(userService).deleteUser(101);
+        doThrow(new UserNotFoundException()).when(userService).deleteUser(101);
 
         ResponseEntity<Optional<String>> expected = userController.deleteUser(101) ;
 
