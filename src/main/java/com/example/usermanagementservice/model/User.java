@@ -45,6 +45,14 @@ public  class User {
      public  String gEtOccupation() {return null;}
      public  String gEtType()  {return null ;}
 
+    public boolean greaterThanGivenName (String name) {
+        if( this.name.compareTo(name)  > 0  ) {
+            return true ;
+        }
+        return false ;
+
+    }
+
 
 
 }

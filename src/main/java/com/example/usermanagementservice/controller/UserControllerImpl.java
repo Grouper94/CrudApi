@@ -9,8 +9,12 @@ import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ToString
 @RestController
@@ -190,9 +194,23 @@ public class UserControllerImpl implements UserController {
         }
 
         return new ResponseEntity<String>(userInfo.getMessage(),HttpStatus.OK);
+    }
 
 
+    @Override
+    @GetMapping("/findByNameAndAge")
+    public ResponseEntity<List<User>> findByNameAndAge( @RequestParam  String name , @RequestParam int age) {
+        List <User>  allUsers = userService.getAllUsers() ;
 
+        List<User> users = allUsers.stream()
+                .filter( user -> user.getAge() > age  &&  user.greaterThanGivenName(name)    )
+//                .filter( user -> user.getAge() > age)
+//                .filter(user -> user.greaterThanGivenName(name))
+                .sorted(Comparator.comparing(User::getName))
+                .collect(Collectors.toList());
+
+
+             return new ResponseEntity<List<User>>(users,HttpStatus.OK) ;
 
     }
 

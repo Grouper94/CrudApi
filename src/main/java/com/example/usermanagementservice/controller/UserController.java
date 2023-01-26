@@ -106,6 +106,14 @@ public interface UserController {
      })
      ResponseEntity <String> getUserInfo() ;
 
+     @Operation(tags = {"Note"},
+             summary = "Returns The Users With Name and Age Greater Than The Provided")
+     @ApiResponses(value = {
+             @ApiResponse(responseCode = "200",description = "Found  The Users"),
+             @ApiResponse(responseCode = "404",description = "No Users Found")
+     })
+     ResponseEntity<List<User>> findByNameAndAge( String name , int age);
+
 
 
 }
