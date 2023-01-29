@@ -2,7 +2,6 @@ package com.example.usermanagementservice.controller;
 
 import com.example.usermanagementservice.exceptions.UserNotFoundException;
 import com.example.usermanagementservice.model.*;
-import com.example.usermanagementservice.repsitory.UserRepository;
 import com.example.usermanagementservice.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
@@ -22,8 +21,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserControllerImpl implements UserController {
     private final UserService userService ;
-
-
 
     @Override
     @PostMapping("/AddUser")
@@ -79,7 +76,6 @@ public class UserControllerImpl implements UserController {
 
         if(  users == null  ||  users.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -189,7 +185,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @GetMapping("/userinfo")
     public ResponseEntity <String> getUserInfo() {
-        UserInfo userInfo = new UserInfo() ;
+        UserInfo userInfo = UserInfo.getUserInfo() ;
         try {
             userInfo.getMessage() ;
 
@@ -213,9 +209,46 @@ public class UserControllerImpl implements UserController {
 
 
              return new ResponseEntity<List<User>>(users,HttpStatus.OK) ;
-
     }
 
+    @Override
+    @GetMapping("/UsersByMonth")
+    public ResponseEntity< List< UserInfoMonthly > > returnUsersByMonth () throws CloneNotSupportedException {
+        UserInfoMonthly userInfoMonthly = new UserInfoMonthly () ;
+        userInfoMonthly.loadDefaultUsers();
+
+        UserInfoMonthly userInfoMonthly1 = userInfoMonthly.clone() ;
+        userInfoMonthly1.setMonth("February");
+
+        UserInfoMonthly userInfoMonthly2 = userInfoMonthly.clone() ;
+        userInfoMonthly2.addUserToList("User_6");
+        userInfoMonthly2.setMonth("March");
+
+        UserInfoMonthly userInfoMonthly3 = userInfoMonthly.clone() ;
+        userInfoMonthly3.addUserToList("User_7");
+        userInfoMonthly3.setMonth("April");
+
+        UserInfoMonthly userInfoMonthly4 = userInfoMonthly.clone() ;
+        userInfoMonthly4.addUserToList("User_10");
+        userInfoMonthly4.addUserToList("User_11");
+        userInfoMonthly4.setMonth("May");
+
+        UserInfoMonthly userInfoMonthly5 = userInfoMonthly.clone() ;
+        userInfoMonthly5.addUserToList("User_32");
+        userInfoMonthly5.setMonth("June");
+
+        List<UserInfoMonthly> usrs = new ArrayList<>() ;
+        usrs.add(userInfoMonthly);
+        usrs.add(userInfoMonthly1);
+        usrs.add(userInfoMonthly2);
+        usrs.add(userInfoMonthly3);
+        usrs.add(userInfoMonthly4);
+        usrs.add(userInfoMonthly5);
+
+        return  new ResponseEntity<>(usrs,HttpStatus.OK);
+    }
 }
+
+
 
 
