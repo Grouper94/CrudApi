@@ -42,8 +42,8 @@ public  class User {
     private int age;
 
 
-     public  String gEtOccupation() {return null;}
-     public  String gEtType()  {return null ;}
+     public  String gEtOccupation() {return "No User Occupation yet";}
+     public  String gEtType()  {return "No User Type yet " ;}
 
     public boolean greaterThanGivenName (String name) {
         if( this.name.compareTo(name)  > 0  ) {
