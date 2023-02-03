@@ -1,6 +1,7 @@
 package com.example.usermanagementservice.controller;
 
 import com.example.usermanagementservice.model.User;
+import com.example.usermanagementservice.model.UserInfoMonthly;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -114,6 +115,13 @@ public interface UserController {
      })
      ResponseEntity<List<User>> findByNameAndAge( String name , int age);
 
-
+     @Operation(
+             tags = {"Note"},
+             summary = "Return all Users for each month")
+     @ApiResponses(value = {
+             @ApiResponse(responseCode = "200",description = "Users has been Printed Successfully"),
+             @ApiResponse(responseCode = "404", description = "User has Not Been  Created")
+     })
+     ResponseEntity<List< UserInfoMonthly >> returnUsersByMonth () throws CloneNotSupportedException;
 
 }
