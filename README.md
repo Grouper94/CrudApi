@@ -1,2 +1,3 @@
 # CrudApi
- Simple Api in Java with SpringBoot 
+ Simple Api implementing CRUD Operations in Java with SpringBoot.
+ Unit and Intergration Tests included.
